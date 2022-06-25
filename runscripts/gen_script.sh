@@ -20,7 +20,7 @@ if [[ "$HOSTNAME_PREFIX" == "cori" ]]; then
     ADIOS2_SRC_PATH=${CFS}/m844/khl7265/cori/adios2/2.7.1
     ADIOS2_LIB_PATH=${CFS}/m844/khl7265/cori/.local/adios2/2.7.1
     OUTPATH_ROOT=${CSCRATCH}/FS_128_16M/E3SM
-    SUBFILEPATH_ROOT=${CSCRATCH}/FS_1_16M/E3SM
+    SUBFILEPATH_ROOT=${CSCRATCH}/FS_8_1M/E3SM
     INFILE=/global/cscratch1/sd/wkliao/FS_1M_32/ND_1951_256K.1.h5
     ACC=m2956
     QUEUE=regular

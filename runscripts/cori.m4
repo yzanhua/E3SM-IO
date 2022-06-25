@@ -40,7 +40,7 @@ CONFIG_POST=VAR_CONFIG
 OUTDIR_ROOT=VAR_OUTDIR_ROOT
 SUBFILEDIR_ROOT=VAR_SUBFILEDIR_ROOT
 
-APPS=(e3sm_io.ad_tam e3sm_io.cray)
+APPS=(e3sm_io.ad_tam)
 HXS=(VAR_HX)
 CONFIG="CONFIG_${CONFIG_POST}"
 CONFIG=${!CONFIG}
@@ -48,9 +48,9 @@ CONFIG_NAME=$(basename -- "${CONFIG}")
 CONFIG_NAME="${CONFIG_NAME%.*}"
 INDIR="IN_${CONFIG_POST}"
 INDIR=${!INDIR}
-DRIVERS=("pnetcdf canonical" "hdf5_log log")
-OPTIONS=(11111 11110)
-FFREQS=(1 VAR_RECS)
+DRIVERS=("pnetcdf canonical" "hdf5 canonical" "hdf5_log log" "adios log" "hdf5 blob" "pnetcdf blob")
+OPTIONS=(11111)
+FFREQS=(VAR_RECS)
 OPS=(VAR_OP)
 
 NN=${SLURM_NNODES}
@@ -124,26 +124,8 @@ do
                         API=${tmp[0]}
                         STRATE=${tmp[1]}
 
-                        if [ "${STRATE}" = "log" ] ; then
-                            # 1 subfile
-                            let NG=1    
-                            # 64 aggregators
-                            ##export E3SM_IO_HINTS="romio_cb_write=enable;"
-                            unset E3SM_IO_HINTS
-                        elif [ "${STRATE}" = "canonical" ] ; then
-                            # pnc always flush on each records
-                            if [ "${API}" = "pnetcdf" ] ; then
-                                if [ "${FFREQ}" != "1" ] ; then
-                                    continue
-                                fi
-                            fi
-                            # 1 subfile
-                            let NG=1    
-                            # 64 aggregators
-                            #export E3SM_IO_HINTS="romio_cb_write=enable;"
-                            unset E3SM_IO_HINTS
-                        else
-                              if [ "${CONFIG_POST}" = "I" ] ; then
+                        if [ "${API}" = "adios" ] ; then
+                            if [ "${CONFIG_POST}" = "I" ] ; then
                                 if [ "${API}" = "adios" ] ; then
                                     let NG=NN*2 # ADIOS method must double #subfiles
                                 else
@@ -154,6 +136,22 @@ do
                             fi
                             # 8 aggregators
                             #export E3SM_IO_HINTS="cb_node=8;cb_config_list=*:8;romio_cb_write=enable"
+                        elif [ "${STRATE}" = "canonical" ] ; then
+                            # pnc always flush on each records
+                            if [ "${API}" = "pnetcdf" ] ; then
+                                let FFREQ=1
+                            fi
+                            # 1 subfile
+                            let NG=1    
+                            # 64 aggregators
+                            #export E3SM_IO_HINTS="romio_cb_write=enable;"
+                            unset E3SM_IO_HINTS
+                        else
+                            # subfile per node
+                            let NG=NN
+                            # 64 aggregators
+                            ##export E3SM_IO_HINTS="romio_cb_write=enable;"
+                            unset E3SM_IO_HINTS
                         fi
 
                         for OPT in ${OPTIONS[@]}
@@ -171,7 +169,7 @@ do
                             export H5VL_LOG_SUBFILING=${SUBFILING}
                             
 
-                            if [[ "${STRATE}" == "blob" || ( "${API}" == "hdf5_log" && "${H5VL_LOG_SUBFILING}" == "1" )]] ; then
+                            if [[ "${STRATE}" == "blob" || "${STRATE}" == "log" ]] ; then
                                 OUTDIR="${SUBFILEDIR_ROOT}/${API}/${STRATE}/${CONFIG_NAME}"
                             else
                                 OUTDIR="${OUTDIR_ROOT}/${API}/${STRATE}/${CONFIG_NAME}"
@@ -214,7 +212,6 @@ do
                             echo "#%$=: logvol_meta_share: ${META_SHARE}"
                             echo "#%$=: logvol_subfiling: ${SUBFILING}"
                             echo "#%$=: operation: ${OP}"
-                            echo "#%$=: delay_init: 1"
                             echo "#%$=: number_of_nodes: ${NN}"
                             echo "#%$=: number_of_proc: ${NP}"
                         
