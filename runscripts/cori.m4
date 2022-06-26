@@ -48,7 +48,7 @@ CONFIG_NAME=$(basename -- "${CONFIG}")
 CONFIG_NAME="${CONFIG_NAME%.*}"
 INDIR="IN_${CONFIG_POST}"
 INDIR=${!INDIR}
-DRIVERS=("pnetcdf canonical" "hdf5 canonical" "hdf5_log log" "adios log" "hdf5 blob" "pnetcdf blob")
+DRIVERS=("pnetcdf canonical" "hdf5 canonical" "hdf5_log log" "adios blob" "hdf5 blob" "pnetcdf blob")
 OPTIONS=(11111)
 FFREQS=(VAR_RECS)
 OPS=(VAR_OP)
@@ -169,7 +169,7 @@ do
                             export H5VL_LOG_SUBFILING=${SUBFILING}
                             
 
-                            if [[ "${STRATE}" == "blob" || "${STRATE}" == "log" ]] ; then
+                            if [[ "${STRATE}" == "blob" || ( "${API}" == "hdf5_log" && "${H5VL_LOG_SUBFILING}" == "1" )]] ; then
                                 OUTDIR="${SUBFILEDIR_ROOT}/${API}/${STRATE}/${CONFIG_NAME}"
                             else
                                 OUTDIR="${OUTDIR_ROOT}/${API}/${STRATE}/${CONFIG_NAME}"

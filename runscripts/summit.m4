@@ -6,8 +6,8 @@ changecom([[[###]]], [[[$$$]]])dnl
 #BSUB -W 00:VAR_TL
 #BSUB -nnodes VAR_NN
 #BSUB -J VAR_NAME
-#BSUB -o VAR_NAME.txt
-#BSUB -e VAR_NAME.err
+#BSUB -o VAR_NAME_%J.txt
+#BSUB -e VAR_NAME_%J.err
 #BSUB -q VAR_QUEUE
 
 set -x #echo on
@@ -41,7 +41,7 @@ CONFIG_POST=VAR_CONFIG
 OUTDIR_ROOT=VAR_OUTDIR_ROOT
 SUBFILEDIR_ROOT=VAR_SUBFILEDIR_ROOT
 
-APPS=(e3sm_io.ad_tam e3sm_io.ibm)
+APPS=(e3sm_io.ad_tam)
 HXS=(VAR_HX)
 CONFIG="CONFIG_${CONFIG_POST}"
 CONFIG=${!CONFIG}
@@ -49,8 +49,8 @@ CONFIG_NAME=$(basename -- "${CONFIG}")
 CONFIG_NAME="${CONFIG_NAME%.*}"
 INDIR="IN_${CONFIG_POST}"
 INDIR=${!INDIR}
-DRIVERS=("pnetcdf canonical" "hdf5_log log")
-OPTIONS=(11111 11110)
+DRIVERS=("pnetcdf canonical" "hdf5 canonical" "hdf5_log log" "adios blob" "hdf5 blob" "pnetcdf blob")
+OPTIONS=(11111)
 FFREQS=(1 VAR_RECS)
 OPS=(VAR_OP)
 
