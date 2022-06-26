@@ -51,7 +51,7 @@ INDIR="IN_${CONFIG_POST}"
 INDIR=${!INDIR}
 DRIVERS=("pnetcdf canonical" "hdf5 canonical" "hdf5_log log" "adios blob" "hdf5 blob" "pnetcdf blob")
 OPTIONS=(11111)
-FFREQS=(1 VAR_RECS)
+FFREQS=(VAR_RECS)
 OPS=(VAR_OP)
 
 NN=VAR_NN
@@ -119,33 +119,7 @@ do
                         API=${tmp[0]}
                         STRATE=${tmp[1]}
 
-                        if [ "${STRATE}" = "log" ] ; then
-                            # Only hdf5_log can do log for now
-                            if [ "${API}" != "hdf5_log" ] ; then
-                                continue
-                            fi
-                            # 1 subfile
-                            let NG=1    
-                            # 64 aggregators
-                            # export E3SM_IO_HINTS="romio_cb_write=enable;"
-                            unset E3SM_IO_HINTS
-                        elif [ "${STRATE}" = "canonical" ] ; then
-                            # pnc always flush on each records
-                            if [ "${API}" = "pnetcdf" ] ; then
-                                if [ "${FFREQ}" != "1" ] ; then
-                                    continue
-                                fi
-                            fi
-                            # 1 subfile
-                            let NG=1    
-                            # 64 aggregators
-                            # export E3SM_IO_HINTS="romio_cb_write=enable;"
-                            unset E3SM_IO_HINTS
-                        else
-                            # hdf5_log cannot do blob
-                            if [ "${API}" == "hdf5_log" ] ; then
-                                continue
-                            fi
+                        if [ "${API}" = "adios" ] ; then
                             if [ "${CONFIG_POST}" = "I" ] ; then
                                 if [ "${API}" = "adios" ] ; then
                                     let NG=NN*2 # ADIOS method must double #subfiles
@@ -156,7 +130,22 @@ do
                                 let NG=NN-1 # F and G case use #nodes - 1
                             fi
                             # 8 aggregators
-                            # export E3SM_IO_HINTS="cb_node=8;cb_config_list=*:8;romio_cb_write=enable"
+                            #export E3SM_IO_HINTS="cb_node=8;cb_config_list=*:8;romio_cb_write=enable"
+                        elif [ "${STRATE}" = "canonical" ] ; then
+                            # pnc always flush on each records
+                            if [ "${API}" = "pnetcdf" ] ; then
+                                let FFREQ=1
+                            fi
+                            # 1 subfile
+                            let NG=1    
+                            # 64 aggregators
+                            #export E3SM_IO_HINTS="romio_cb_write=enable;"
+                            unset E3SM_IO_HINTS
+                        else
+                            # subfile per node
+                            let NG=NN
+                            # 64 aggregators
+                            ##export E3SM_IO_HINTS="romio_cb_write=enable;"
                             unset E3SM_IO_HINTS
                         fi
 
