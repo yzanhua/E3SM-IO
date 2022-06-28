@@ -8,7 +8,7 @@ changecom([[[###]]], [[[$$$]]])dnl
 #SBATCH -o [[[]]]VAR_NAME[[[]]]_%j.txt
 #SBATCH -e [[[]]]VAR_NAME[[[]]]_%j.err
 #SBATCH -L SCRATCH
-#SBATCH -A [[[]]]VAR_ACC[[[]]]_g
+#SBATCH -A [[[]]]VAR_ACC[[[]]]
 
 set -x #echo on
 
@@ -48,7 +48,7 @@ CONFIG_NAME=$(basename -- "${CONFIG}")
 CONFIG_NAME="${CONFIG_NAME%.*}"
 INDIR="IN_${CONFIG_POST}"
 INDIR=${!INDIR}
-DRIVERS=("pnetcdf canonical" "hdf5 canonical" "hdf5_log log" "adios blob" "hdf5 blob" "pnetcdf blob")
+DRIVERS=("pnetcdf canonical" "hdf5_log log" "adios blob" "hdf5 blob" "pnetcdf blob")
 OPTIONS=(11111)
 FFREQS=(VAR_RECS)
 OPS=(VAR_OP)

@@ -5,10 +5,10 @@ changecom([[[###]]], [[[$$$]]])dnl
 #BSUB -P VAR_ACC
 #BSUB -W 00:VAR_TL
 #BSUB -nnodes VAR_NN
-#BSUB -J VAR_NAME
-#BSUB -o VAR_NAME_%J.txt
-#BSUB -e VAR_NAME_%J.err
-#BSUB -q VAR_QUEUE
+#BSUB -J [[[]]]VAR_NAME[[[]]]
+#BSUB -o [[[]]]VAR_NAME[[[]]]_%J.txt
+#BSUB -e [[[]]]VAR_NAME[[[]]]_%J.err
+#BSUB -q [[[]]]VAR_QUEUE[[[]]]
 
 set -x #echo on
 
@@ -49,7 +49,7 @@ CONFIG_NAME=$(basename -- "${CONFIG}")
 CONFIG_NAME="${CONFIG_NAME%.*}"
 INDIR="IN_${CONFIG_POST}"
 INDIR=${!INDIR}
-DRIVERS=("pnetcdf canonical" "hdf5 canonical" "hdf5_log log" "adios blob" "hdf5 blob" "pnetcdf blob")
+DRIVERS=("pnetcdf canonical" "hdf5_log log" "adios blob" "hdf5 blob" "pnetcdf blob")
 OPTIONS=(11111)
 FFREQS=(VAR_RECS)
 OPS=(VAR_OP)
