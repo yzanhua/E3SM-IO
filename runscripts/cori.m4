@@ -102,6 +102,7 @@ export H5VL_LOG_SUBFILING=1
 export E3SM_IO_HDF5_USE_LOGVOL_WRITEN=1
 export H5VL_LOG_SHOW_PROFILING_INFO=1
 export H5VL_LOG_PRINT_MPI_INFO=1
+export H5VL_LOG_NSUBFILES=-1
 
 ulimit -c unlimited
 
@@ -146,9 +147,15 @@ do
                             # 64 aggregators
                             #export E3SM_IO_HINTS="romio_cb_write=enable;"
                             unset E3SM_IO_HINTS
-                        else
+                        elif [ "${STRATE}" = "blob" ] ; then
                             # subfile per node
                             let NG=NN
+                            # 64 aggregators
+                            ##export E3SM_IO_HINTS="romio_cb_write=enable;"
+                            unset E3SM_IO_HINTS
+                        else
+                            # subfile per node
+                            let NG=1
                             # 64 aggregators
                             ##export E3SM_IO_HINTS="romio_cb_write=enable;"
                             unset E3SM_IO_HINTS
