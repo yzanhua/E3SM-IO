@@ -107,14 +107,14 @@ for i in $(seq VAR_RUNS);
 do
     for APP in ${APPS[@]}
     do
-        for FFREQ in ${FFREQS[@]}
+        for (( j=0; j<${#OPS}; j++ ));
         do
-            for (( j=0; j<${#OPS}; j++ ));
+            OP=${OPS:$j:1}
+            for HX in ${HXS[@]}
             do
-                OP=${OPS:$j:1}
-                for HX in ${HXS[@]}
+                for DRIVER in "${DRIVERS[@]}"
                 do
-                    for DRIVER in "${DRIVERS[@]}"
+                    for FFREQ in ${FFREQS[@]}
                     do
                         tmp=($DRIVER)
                         API=${tmp[0]}

@@ -14,11 +14,11 @@ HOSTNAME_PREFIX=${HOSTNAME:0:4}
 if [[ "$HOSTNAME_PREFIX" == "cori" ]]; then
     # Cori
     HDF5_SRC_PATH=${CFS}/m844/khl7265/cori/hdf5/1.13.0
-    HDF5_LIB_PATH=${CFS}/m844/khl7265/cori/.local/hdf5/1.13.0
+    HDF5_LIB_PATH=${CFS}/m844/khl7265/cori/.local/hdf5/1.13.0_static
     PNC_SRC_PATH=${CFS}/m844/khl7265/cori/pnetcdf/master
     PNC_LIB_PATH=${CFS}/m844/khl7265/cori/.local/pnetcdf/master
-    ADIOS2_SRC_PATH=${CFS}/m844/khl7265/cori/adios2/2.7.1
-    ADIOS2_LIB_PATH=${CFS}/m844/khl7265/cori/.local/adios2/2.7.1
+    ADIOS2_SRC_PATH=${CFS}/m844/khl7265/cori/adios2/2.8.1
+    ADIOS2_LIB_PATH=${CFS}/m844/khl7265/cori/.local/adios2/2.8.1
     OUTPATH_ROOT=${CSCRATCH}/FS_128_16M/E3SM
     SUBFILEPATH_ROOT=${CSCRATCH}/FS_8_1M/E3SM
     INFILE=/global/cscratch1/sd/wkliao/FS_1M_32/ND_1951_256K.1.h5
@@ -32,7 +32,7 @@ elif [[ "$HOSTNAME_PREFIX" == "logi" ]]; then
     if [[ "$LMOD_SYSTEM_NAME" == "perlmutter" ]]; then
         # perlmutter
         HDF5_SRC_PATH=${CFS}/m844/khl7265/perlmutter/hdf5/1.13.0
-        HDF5_LIB_PATH=${CFS}/m844/khl7265/perlmutter/.local/hdf5/1.13.0
+        HDF5_LIB_PATH=${CFS}/m844/khl7265/perlmutter/.local/hdf5/1.13.0_static
         PNC_SRC_PATH=${CFS}/m844/khl7265/perlmutter/pnetcdf/master
         PNC_LIB_PATH=${CFS}/m844/khl7265/perlmutter/.local/pnetcdf/master
         ADIOS2_SRC_PATH=${CFS}/m844/khl7265/perlmutter/adios2/2.7.1
@@ -49,11 +49,11 @@ elif [[ "$HOSTNAME_PREFIX" == "logi" ]]; then
     else
         # Summit
         HDF5_SRC_PATH=/gpfs/alpine/csc332/scratch/khl7265/hdf5/1.13.0
-        HDF5_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/hdf5/1.13.0
+        HDF5_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/hdf5/1.13.0_static
         PNC_SRC_PATH=/gpfs/alpine/csc332/scratch/khl7265/pnetcdf/master
         PNC_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/pnetcdf/master
-        ADIOS2_SRC_PATH=/gpfs/alpine/csc332/scratch/khl7265/adios2/2.7.1
-        ADIOS2_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/adios2/2.7.1
+        ADIOS2_SRC_PATH=/gpfs/alpine/csc332/scratch/khl7265/adios2/2.8.1
+        ADIOS2_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/adios2/2.8.1
         OUTPATH_ROOT=/gpfs/alpine/csc332/scratch/khl7265/FS_EVAL/e3sm/output
         SUBFILEPATH_ROOT=/gpfs/alpine/csc332/scratch/khl7265/FS_EVAL/e3sm/output
         INFILE=/gpfs/alpine/csc332/scratch/khl7265/FS_EVAL/e3sm/intput
@@ -207,38 +207,38 @@ if [[ "$HOSTNAME_PREFIX" == "cori" ]]; then
     # Cori
     if [[ "$VER" == "profiling" ]]; then
         LOGVOL_SRC_PATH=${CFS}/m844/khl7265/cori/logvol/profiling
-        LOGVOL_LIB_PATH=${CFS}/m844/khl7265/cori/.local/log_io_vol/profiling
+        LOGVOL_LIB_PATH=${CFS}/m844/khl7265/cori/.local/log_io_vol/profiling_static
     else
         LOGVOL_SRC_PATH=${CFS}/m844/khl7265/cori/logvol/master
-        LOGVOL_LIB_PATH=${CFS}/m844/khl7265/cori/.local/log_io_vol/master
+        LOGVOL_LIB_PATH=${CFS}/m844/khl7265/cori/.local/log_io_vol/master_static
     fi
 elif [[ "$HOSTNAME_PREFIX" == "thet" ]]; then
     # Theta (Not supported yet)
     if [[ "$VER" == "profiling" ]]; then
         LOGVOL_SRC_PATH=/gpfs/mira-home/khou/logvol/profiling
-        LOGVOL_LIB_PATH=/gpfs/mira-home/khou/.local/log_io_vol/profiling
+        LOGVOL_LIB_PATH=/gpfs/mira-home/khou/.local/log_io_vol/profiling_static
     else
         LOGVOL_SRC_PATH=/gpfs/mira-home/khou/logvol/master
-        LOGVOL_LIB_PATH=/gpfs/mira-home/khou/.local/log_io_vol/master
+        LOGVOL_LIB_PATH=/gpfs/mira-home/khou/.local/log_io_vol/master_static
     fi
 elif [[ "$HOSTNAME_PREFIX" == "logi" ]]; then
     if [[ "$LMOD_SYSTEM_NAME" == "perlmutter" ]]; then
         # perlmutter
         if [[ "$VER" == "profiling" ]]; then
             LOGVOL_SRC_PATH=${CFS}/m844/khl7265/perlmutter/logvol/profiling
-            LOGVOL_LIB_PATH=${CFS}/m844/khl7265/perlmutter/.local/log_io_vol/profiling
+            LOGVOL_LIB_PATH=${CFS}/m844/khl7265/perlmutter/.local/log_io_vol/profiling_static
         else
             LOGVOL_SRC_PATH=${CFS}/m844/khl7265/perlmutter/logvol/master
-            LOGVOL_LIB_PATH=${CFS}/m844/khl7265/perlmutter/.local/log_io_vol/master
+            LOGVOL_LIB_PATH=${CFS}/m844/khl7265/perlmutter/.local/log_io_vol/master_static
         fi
     else
         # Summit (Not supported yet)
         if [[ "$VER" == "profiling" ]]; then
             LOGVOL_SRC_PATH=/gpfs/alpine/csc332/scratch/khl7265/logvol/profiling
-            LOGVOL_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/log_io_vol/profiling
+            LOGVOL_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/log_io_vol/profiling_static
         else
             LOGVOL_SRC_PATH=/gpfs/alpine/csc332/scratch/khl7265/logvol/master
-            LOGVOL_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/log_io_vol/master
+            LOGVOL_LIB_PATH=/gpfs/alpine/csc332/scratch/khl7265/.local/log_io_vol/master_static
         fi
     fi
 fi
