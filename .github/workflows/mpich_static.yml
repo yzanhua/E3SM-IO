@@ -78,7 +78,10 @@ jobs:
           if: ${{ success() }}
           run: |
             cd ${GITHUB_WORKSPACE}/ADIOS/adios2_build
-            make -j 8 > qout 2>&1
-            make install >> qout 2>&1
-            make clean >> qout 2>&1
-            cd ${GITHUB_WORKSPACE}
+            make
+        - name: make
+          if: ${{ success() }}
+          run: |
+            cd ${GITHUB_WORKSPACE}/ADIOS/adios2_build
+            make install
+            make clean
