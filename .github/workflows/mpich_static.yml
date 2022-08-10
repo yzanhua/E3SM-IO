@@ -29,7 +29,6 @@ jobs:
             sudo apt-get update
             sudo apt-get install automake autoconf libtool libtool-bin m4 cmake
             cmake --version
-            sudo apt-get install freefilesync
             # mpich
             sudo apt-get install mpich
             # zlib
