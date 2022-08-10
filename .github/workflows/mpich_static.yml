@@ -85,3 +85,16 @@ jobs:
             cd ${GITHUB_WORKSPACE}/ADIOS/adios2_build
             make install
             make clean
+        - name: make
+          if: ${{ failure() }}
+          run: |
+            cd ${GITHUB_WORKSPACE}/ADIOS/adios2_build
+            echo "---- ../lib/cmake/adios2/adios2-config.cmake ------------------------------------------------------------"
+            cat ../lib/cmake/adios2/adios2-config.cmake
+            echo "---- cmake/install/post/cmake_install.cmake ------------------------------------------------------------"
+            cat cmake/install/post/cmake_install.cmake
+            echo "---- cmake/install/post/generate-adios2-config.sh ------------------------------------------------------------"
+            cat cmake/install/post/generate-adios2-config.sh
+            echo "----- CMakeFiles/CMakeOutput.log -----------------------------------------------------------"
+            cat CMakeFiles/CMakeOutput.log
+ 
