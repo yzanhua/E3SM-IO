@@ -27,11 +27,10 @@ jobs:
         - name: Set up dependencies
           run: |
             sudo apt-get update
-            sudo apt-get install automake autoconf libtool libtool-bin m4
+            sudo apt-get install automake autoconf libtool libtool-bin m4 cmake
+            cmake --version
             # mpich
             # sudo apt-get install mpich
-            # OpenMPI
-            sudo apt-get install openmpi-bin
             # zlib
             sudo apt-get install zlib1g-dev
         - name: Build MPICH
