@@ -30,33 +30,9 @@ jobs:
             sudo apt-get install automake autoconf libtool libtool-bin m4 cmake
             cmake --version
             # mpich
-            # sudo apt-get install mpich
+            sudo apt-get install mpich
             # zlib
             sudo apt-get install zlib1g-dev
-        - name: Build MPICH
-          run: |
-            echo "Install MPICH on ${GITHUB_WORKSPACE}/MPICH"
-            rm -rf MPICH
-            mkdir MPICH
-            cd MPICH
-            # git clone -q https://github.com/pmodels/mpich.git
-            # cd mpich
-            # git submodule update --init
-            # ./autogen.sh
-            VERSION=4.0.2
-            wget -q https://www.mpich.org/static/downloads/${VERSION}/mpich-${VERSION}.tar.gz
-            gzip -dc mpich-${VERSION}.tar.gz | tar -xf -
-            cd mpich-${VERSION}
-            ./configure --prefix=${GITHUB_WORKSPACE}/MPICH \
-                        --silent \
-                        --enable-romio \
-                        --with-file-system=ufs \
-                        --with-device=ch3:sock \
-                        --disable-fortran \
-                        CC=gcc
-            make -s LIBTOOLFLAGS=--silent V=1 -j 8 install > qout 2>&1
-            make -s distclean >> qout 2>&1
-            cd ${GITHUB_WORKSPACE}
         - name: Install ADIOS2
           if: ${{ success() }}
           run: |
@@ -70,19 +46,17 @@ jobs:
         - name: untar
           if: ${{ success() }}
           run: |
-            cd ${GITHUB_WORKSPACE}
-            cd ADIOS
+            cd ${GITHUB_WORKSPACE}/ADIOS
             VERSION=2.8.1
             tar -zxf v${VERSION}.tar.gz
-        - name: untar
+            mkdir adios2_build
+        - name: cmake
           if: ${{ success() }}
           run: |
-            cd ${GITHUB_WORKSPACE}
-            cd ADIOS
-            mkdir adios2_build
-            cd adios2_build
-            CC=${GITHUB_WORKSPACE}/MPICH/bin/mpicc \
-            CXX=${GITHUB_WORKSPACE}/MPICH/bin/mpicxx \
+            VERSION=2.8.1
+            cd ${GITHUB_WORKSPACE}/ADIOS/adios2_build
+            CC=mpicc \
+            CXX=mpicxx \
             cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/ADIOS \
                   -DADIOS2_USE_MPI=ON \
                   -DADIOS2_USE_Fortran=OFF \
@@ -100,12 +74,10 @@ jobs:
                   -DADIOS2_BUILD_EXAMPLES=OFF \
                   -DBUILD_TESTING=OFF \
                   ../ADIOS2-${VERSION}
-        - name: untar
+        - name: make
           if: ${{ success() }}
           run: |
-            cd ${GITHUB_WORKSPACE}
-            cd ADIOS
-            cd adios2_build
+            cd ${GITHUB_WORKSPACE}/ADIOS/adios2_build
             make -j 8 > qout 2>&1
             make install >> qout 2>&1
             make clean >> qout 2>&1
