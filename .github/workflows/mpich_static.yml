@@ -41,19 +41,19 @@ jobs:
             rm -rf ADIOS
             mkdir ADIOS
             cd ADIOS
-            VERSION=2.8.1
+            VERSION=2.8.3
             wget -cq https://github.com/ornladios/ADIOS2/archive/refs/tags/v${VERSION}.tar.gz
         - name: untar
           if: ${{ success() }}
           run: |
             cd ${GITHUB_WORKSPACE}/ADIOS
-            VERSION=2.8.1
+            VERSION=2.8.3
             tar -zxf v${VERSION}.tar.gz
             mkdir adios2_build
         - name: cmake
           if: ${{ success() }}
           run: |
-            VERSION=2.8.1
+            VERSION=2.8.3
             cd ${GITHUB_WORKSPACE}/ADIOS/adios2_build
             CC=mpicc \
             CXX=mpicxx \
