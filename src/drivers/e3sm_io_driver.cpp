@@ -136,9 +136,13 @@ e3sm_io_driver *e3sm_io_get_driver (const char *filename, /* NULL is for read */
         if (rlen == 8) {  // It is HDF5, check if it is Log VOL
             hid_t fid = -1;
             htri_t isnc, islog;
+            hid_t native_vol_id = -1;
 
             hid_t faplid = H5Pcreate (H5P_FILE_ACCESS);
-            H5Pset_fapl_mpio(faplid, MPI_COMM_SELF, MPI_INFO_NULL);
+            native_vol_id = H5VLpeek_connector_id_by_name ("native");
+            if (native_vol_id < 0) { ERR_OUT ("Unable to get native HDF5 VOL"); }
+            err = H5Pset_vol(faplid, native_vol_id, NULL);
+            CHECK_ERR;
             fid = H5Fopen (path, H5F_ACC_RDONLY, faplid);
             if (fid < 0) { ERR_OUT ("HDF5 header detected, but not a HDF5 file"); }
 
